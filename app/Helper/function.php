@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Model\Setting;
 use Hyperf\Context\ApplicationContext;
 use App\Service\LoggerService;
 use Psr\SimpleCache\CacheInterface;
@@ -275,6 +276,10 @@ if (! function_exists('setting')) {
     function setting($key)
     {
         $setting = cache()->get('setting:default');
+        if(!$setting){
+            $data = Setting::list();
+            cache()->set('setting:default', $data);
+        }
         return $setting[$key] ?: '';
     }
 }
