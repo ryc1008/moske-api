@@ -31,6 +31,7 @@ class PlayletController extends CommonController
 
         //必须是VIP，免费才能看
         $user = $this->user();
+        $ids = [];
         foreach ($list->items() as &$item){
             $user['is_buy'] = 0;
             if($item['money'] > 0){
@@ -48,10 +49,10 @@ class PlayletController extends CommonController
             $item['guid'] = uuid();
             $item['state'] = 'pause';
             $item['playing'] = false;
-            //更新自身show值
-            Playlet::matic('show', $item['id']);
+            $ids[] = $item['id'];
         }
-
+        //更新自身show值
+        Playlet::whereIn('id', $ids)->increment('show');
         return $this->returnJson(0, $list);
     }
 
