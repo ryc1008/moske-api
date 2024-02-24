@@ -49,7 +49,7 @@ class PlayletController extends CommonController
             $item['state'] = 'pause';
             $item['playing'] = false;
             //更新自身show值
-//            Playlet::matic('show', $item['id']);
+            Playlet::matic('show', $item['id']);
         }
 
         return $this->returnJson(0, $list);
