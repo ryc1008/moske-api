@@ -28,6 +28,7 @@ class PlayletController extends CommonController
         }
         $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits'];
         $list = Playlet::app($params, $fields, 5);
+
         //必须是VIP，免费才能看
         $user = $this->user();
         foreach ($list->items() as &$item){
