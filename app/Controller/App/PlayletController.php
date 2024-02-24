@@ -29,28 +29,28 @@ class PlayletController extends CommonController
         $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits'];
         $list = Playlet::app($params, $fields, 5);
 
-        //必须是VIP，免费才能看
-        $user = $this->user();
-        foreach ($list->items() as &$item){
-            $user['is_buy'] = 0;
-            if($item['money'] > 0){
-                //必须是购买，钻石才能看
-                $buy = $this->isBuy($user['id'], $item['id'], 'playlet');
-                if($buy){
-                    $user['is_buy'] = 1;
-                }
-            }
-            $favor = $this->isFavor($user['id'], $item['id'], 'playlet');
-            $user['is_favor'] = $favor ? 1 : 0;
-            $praise = $this->isPraise($user['id'], $item['id'], 'playlet');
-            $user['is_praise'] = $praise ? 1 : 0;
-            $item['user'] = $user;
-            $item['guid'] = uuid();
-            $item['state'] = 'pause';
-            $item['playing'] = false;
-            //更新自身show值
-            Playlet::matic('show', $item['id']);
-        }
+//        //必须是VIP，免费才能看
+//        $user = $this->user();
+//        foreach ($list->items() as &$item){
+//            $user['is_buy'] = 0;
+//            if($item['money'] > 0){
+//                //必须是购买，钻石才能看
+//                $buy = $this->isBuy($user['id'], $item['id'], 'playlet');
+//                if($buy){
+//                    $user['is_buy'] = 1;
+//                }
+//            }
+//            $favor = $this->isFavor($user['id'], $item['id'], 'playlet');
+//            $user['is_favor'] = $favor ? 1 : 0;
+//            $praise = $this->isPraise($user['id'], $item['id'], 'playlet');
+//            $user['is_praise'] = $praise ? 1 : 0;
+//            $item['user'] = $user;
+//            $item['guid'] = uuid();
+//            $item['state'] = 'pause';
+//            $item['playing'] = false;
+//            //更新自身show值
+//            Playlet::matic('show', $item['id']);
+//        }
         return $this->returnJson(0, $list);
     }
 
