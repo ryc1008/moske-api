@@ -91,4 +91,23 @@ class Playlet extends Base
             ->paginate($this->limit);
     }
 
+    protected function app($params = [], $fields = ['*'], $limit = 8){
+        return $this->select($fields)
+            ->where(function ($query) use ($params) {
+                if(isset($params['status']) && $params['status']){
+                    $query->whereIn('status', $params['status']);
+                }
+                if(isset($params['tid']) && $params['tid']){
+                    $query->whereIn('type_id', $params['tid']);
+                }
+                if(isset($params['id']) && $params['id']){
+                    $query->whereIn('id', $params['id']);
+                }
+            })->with(['type' => function (Relation $relation) {
+                $relation->getQuery()->select(['id', 'title', 'icon']);
+            }])->orderBy('id', 'desc')
+            ->paginate($limit);
+    }
+
+
 }

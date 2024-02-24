@@ -197,5 +197,19 @@ abstract class Base extends Model
         ];
     }
 
-
+    /**
+     * 自动增加或者减少
+     * @param $field
+     * @param $type 0减少 1增加
+     * @param $id 资源ID
+     * @param $number
+     * @return int
+     */
+    protected function matic($field = '', $id = 0, $type = 1, $number = 1){
+        if($type){
+            return $this->where('id', $id)->increment($field, $number);
+        }else{
+            return $this->where('id', $id)->decrement($field, $number);
+        }
+    }
 }

@@ -6,20 +6,29 @@ namespace App\Controller\App;
 
 use App\Controller\BaseController;
 use App\Model\User;
+use App\Model\UserBuy;
+use App\Model\UserFavor;
+use App\Model\UserPraise;
 
 class CommonController extends BaseController
 {
-    protected $userid = 0;
-
-
-    public function __construct()
-    {
-        $this->userid = 10000001;
-//        logger_debug($this->userid);
-    }
-
+    /**
+     * 获取登录用户的VIP信息
+     * @return array|null
+     */
     protected function user(){
-
+        try{
+            $auth = auth('jwt:user')->user();
+            $check = $this->check($auth['vip_at'], $auth['id']);
+            if ($check) {
+                $auth['vip_id'] = 1;
+                $auth['vip_at'] = null;
+            }
+            $user = ['id' => $auth['id'], 'vip_id' => $auth['vip_id']];
+        }catch (\Throwable $e){
+            $user = ['id' => 0, 'vip_id' => 0];
+        }
+        return $user;
     }
 
     /**
@@ -30,7 +39,6 @@ class CommonController extends BaseController
      */
     protected function check($date = '', $userid = 0){
         if($date){
-            $userid = $userid ?: $this->userid;
             $now = time();
             $time = strtotime($date);
             if ($now > $time) {
@@ -40,6 +48,39 @@ class CommonController extends BaseController
             }
         }
         return false;
+    }
+
+    /**
+     * 是否购买
+     * @param $userid
+     * @param $gid
+     * @param $model
+     * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
+     */
+    protected function isBuy($userid = 0, $gid = 0, $model = ''){
+        return UserBuy::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
+    }
+
+    /**
+     * 是否收藏
+     * @param $userid
+     * @param $gid
+     * @param $model
+     * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
+     */
+    protected function isFavor($userid = 0, $gid = 0, $model = ''){
+        return UserFavor::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
+    }
+
+    /**
+     * 是否点赞
+     * @param $userid
+     * @param $gid
+     * @param $model
+     * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
+     */
+    protected function isPraise($userid = 0, $gid = 0, $model = ''){
+        return UserPraise::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
     }
 
 

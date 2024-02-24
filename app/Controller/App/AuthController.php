@@ -18,7 +18,14 @@ class AuthController extends CommonController
 {
 
     public function test(){
-        return $this->returnJson(0, 12331);
+        try{
+            $user = auth('jwt:user')->user();
+        }catch (\Throwable $e){
+            $user = null;
+        }
+        return $this->returnJson(0, $user);
+
+
     }
 
 
