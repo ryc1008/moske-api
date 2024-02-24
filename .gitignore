@@ -4,12 +4,7 @@
 *.patch
 .idea/
 .git/
-runtime/cache
-runtime/container
-runtime/logs
-runtime/view
-runtime/*.log
-runtime/*.pid
+runtime/
 vendor/
 .phpintel/
 .env
