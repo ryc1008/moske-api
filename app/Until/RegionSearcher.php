@@ -68,7 +68,7 @@ class RegionSearcher
         } else {
             // 加载默认数据文件 by Anyon
             if (is_null($dbFile)) {
-                $dbFile = BASE_PATH  . '/runtime/ip2location/ip2location.xdb';
+                $dbFile = BASE_PATH  . '/storage/ip2location/ip2location.xdb';
             }
             // open the xdb binary file
             $this->handle = fopen($dbFile, "r");
