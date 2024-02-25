@@ -120,7 +120,10 @@ class PlayletController extends CommonController
             'good_id' => $id,
             'model' => $model
         ];
-        UserFavor::create($insert);
+        Db::transaction(function () use ($insert, $info){
+            UserFavor::create($insert);
+            $info->increment('favor');
+        });
         return $this->returnJson();
     }
 
