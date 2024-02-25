@@ -8,6 +8,7 @@ use App\Controller\BaseController;
 use App\Model\User;
 use App\Model\UserBuy;
 use App\Model\UserFavor;
+use App\Model\UserFollow;
 use App\Model\UserPraise;
 
 class CommonController extends BaseController
@@ -81,6 +82,17 @@ class CommonController extends BaseController
      */
     protected function isPraise($userid = 0, $gid = 0, $model = 0){
         return UserPraise::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
+    }
+
+    /**
+     * 是否关注
+     * @param $userid
+     * @param $gid
+     * @param $model
+     * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
+     */
+    protected function isFollow($userid = 0, $gid = 0, $model = 0){
+        return UserFollow::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
     }
 
     /**

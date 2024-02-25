@@ -9,6 +9,7 @@ use App\Job\RegisterJob;
 use App\Model\Playlet;
 use App\Model\UserBuy;
 use App\Model\UserFavor;
+use App\Model\UserFollow;
 use App\Model\UserPraise;
 use App\Service\QueueService;
 use Hyperf\DbConnection\Db;
@@ -45,10 +46,15 @@ class PlayletController extends CommonController
                     $user['is_buy'] = 1;
                 }
             }
+            //是否收藏
             $favor = $this->isFavor($user['id'], $item['id'], $model);
             $user['is_favor'] = $favor ? 1 : 0;
+            //是否点赞
             $praise = $this->isPraise($user['id'], $item['id'], $model);
             $user['is_praise'] = $praise ? 1 : 0;
+            //是否关注人物（类目）
+            $follow = $this->isFollow($user['id'], $item['id'], $model);
+            $user['is_follow'] = $follow ? 1 : 0;
             $item['user'] = $user;
             $item['guid'] = uuid();
             $item['state'] = 'pause';
@@ -129,12 +135,32 @@ class PlayletController extends CommonController
 
     public function focus(RequestInterface $request)
     {
-        $id = (int)$request->query('id', 0);
-        $fields = ['id', 'name', 'avatar', 'target', 'time', 'hour'];
-        $info = Playlet::info($id, $fields);
-        //是否是VIP
-        //视频当前播放时间(开播时间 + 当前时间)
-        return $this->returnJson(0, $info, $id);
+        $id = (int)$request->post('id', 0);
+        $user = $this->user();
+        $userid = $user['id'];
+        if(!$userid){
+            return $this->returnJson(1, null, '未登录');
+        }
+        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        //数据是否存在
+        if(!$info){
+            return $this->returnJson(1, null, '数据不存在');
+        }
+        $model = $this->model($this->m);
+        //是否已经关注
+        $praise = UserFollow::where('user_id', $userid)
+            ->where('good_id', $id)
+            ->where('model', $model)->first();
+        if($praise){
+            return $this->returnJson(1, null, '已关注');
+        }
+        $insert = [
+            'user_id' => $userid,
+            'good_id' => $id,
+            'model' => $model
+        ];
+        UserFollow::create($insert);
+        return $this->returnJson();
     }
 }
 
