@@ -25,9 +25,9 @@ class CommonController extends BaseController
                 $auth['vip_id'] = 1;
                 $auth['vip_at'] = null;
             }
-            $user = ['id' => $auth['id'], 'vip_id' => $auth['vip_id']];
+            $user = ['id' => $auth['id'], 'vip_id' => $auth['vip_id'], 'balance' => $auth['balance']];
         }catch (\Throwable $e){
-            $user = ['id' => 0, 'vip_id' => 0];
+            $user = ['id' => 0, 'vip_id' => 0, 'balance' => 0];
         }
         return $user;
     }
