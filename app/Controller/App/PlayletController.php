@@ -39,15 +39,19 @@ class PlayletController extends CommonController
         $user = $this->user();
         $model = $this->model($this->m);
         foreach ($list->items() as &$item){
-            $user['is_buy'] = 1;//免费设置成已购买，不显示
+            $user['is_buy'] = 0;//不是会员,不管免不免费，都是未购买
+            if($user['vip_id'] > 1){
+                $user['is_buy'] = 1;//是会员, 免费设置成已购买
+            }
+            //不管是不是会员，购买了的肯定都能看（这里不建议把需要花钱的改成免费的，可能造成别人不是VIP了，之前花了钱不能再继续看了）
             if($item['money'] > 0){
-                $user['is_buy'] = 0;//不免费没购买，显示
-                //必须是购买，钻石才能看
+                //需要钻石的必须是购买才能看
                 $buy = $this->isBuy($user['id'], $item['id'], $model);
-                if($buy){
-                    $user['is_buy'] = 1; //不免费的已购买，不显示
+                if(!$buy){
+                    $user['is_buy'] = 0;
                 }
             }
+
             //是否收藏
             $favor = $this->isFavor($user['id'], $item['id'], $model);
             $user['is_favor'] = $favor ? 1 : 0;
