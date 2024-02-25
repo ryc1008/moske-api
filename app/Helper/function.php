@@ -273,7 +273,7 @@ if (! function_exists('setting')) {
      * @param  string  $text
      * @return string
      */
-    function setting($key)
+    function setting($key = '')
     {
 //        $setting = cache()->get('setting:default');
 //        if(!$setting){
@@ -284,7 +284,7 @@ if (! function_exists('setting')) {
                 }
             }
 //        }
-        return $setting[$key] ?: '';
+        return $key ? $setting[$key] : $setting;
     }
 }
 

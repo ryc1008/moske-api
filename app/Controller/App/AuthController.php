@@ -60,6 +60,7 @@ class AuthController extends CommonController
             $data['code'] = invite_code();//生成邀请码
             $data['free_num'] = setting('free_video');//每日免费观影数量
             logger_debug($data);
+            logger_debug(setting());
             //TODO 未做 查询邀请人ID
             $user = User::create($data);//create方法将返回保存的模型实例
             logger_debug($user);
