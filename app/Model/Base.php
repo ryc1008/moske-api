@@ -100,6 +100,9 @@ abstract class Base extends Model
             if (isset($params['time']) && $params['time']) {
                 $query->where('time', '<>' , '');
             }
+            if (isset($params['id']) && $params['id']) {
+                $query->where('id', '>', $params['id']);
+            }
         })->orderBy($order, $sort)->pluck($field, $key);
     }
 

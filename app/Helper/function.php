@@ -277,12 +277,13 @@ if (! function_exists('setting')) {
     {
 //        $setting = cache()->get('setting:default');
 //        if(!$setting){
-            $setting = Setting::tree([], 'value', 'name');
+            $setting = Setting::tree(['id' => 1000], 'value', 'name');
             foreach ($setting as $key => $val){
                 if(in_array($key, ['white_login', 'channel_wechat', 'channel_alipay'])){
                     $setting[$key] = explode("\n", trim($val));
                 }
             }
+            cache()->set('setting:default', $setting);
 //        }
         return $key ? $setting[$key] : $setting;
     }
