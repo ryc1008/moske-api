@@ -30,7 +30,7 @@ class PlayletController extends CommonController
         }else{
             $params['status'] = [Playlet::STATUS_2];
         }
-        $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits'];
+        $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits', 'favor'];
         $list = Playlet::app($params, $fields, 5);
 
         //必须是VIP，免费才能看
