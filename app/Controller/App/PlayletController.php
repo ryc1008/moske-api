@@ -39,12 +39,12 @@ class PlayletController extends CommonController
         $user = $this->user();
         $model = $this->model($this->m);
         foreach ($list->items() as &$item){
-            $user['is_buy'] = 0;
+            $user['is_buy'] = 1;//免费的显示
             if($item['money'] > 0){
                 //必须是购买，钻石才能看
                 $buy = $this->isBuy($user['id'], $item['id'], $model);
                 if($buy){
-                    $user['is_buy'] = 1;
+                    $user['is_buy'] = 0; //不免费的没购买的显示
                 }
             }
             //是否收藏
