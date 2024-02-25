@@ -96,12 +96,32 @@ class PlayletController extends CommonController
 
     public function favor(RequestInterface $request)
     {
-        $id = (int)$request->query('id', 0);
-        $fields = ['id', 'name', 'avatar', 'target', 'time', 'hour'];
-        $info = Playlet::info($id, $fields);
-        //是否是VIP
-        //视频当前播放时间(开播时间 + 当前时间)
-        return $this->returnJson(0, $info, $id);
+        $id = (int)$request->post('id', 0);
+        $user = $this->user();
+        $userid = $user['id'];
+        if(!$userid){
+            return $this->returnJson(1, null, '未登录');
+        }
+        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        //数据是否存在
+        if(!$info){
+            return $this->returnJson(1, null, '数据不存在');
+        }
+        $model = $this->model($this->m);
+        //是否已经收藏
+        $praise = UserFavor::where('user_id', $userid)
+            ->where('good_id', $id)
+            ->where('model', $model)->first();
+        if($praise){
+            return $this->returnJson(1, null, '已收藏');
+        }
+        $insert = [
+            'user_id' => $userid,
+            'good_id' => $id,
+            'model' => $model
+        ];
+        UserFavor::create($insert);
+        return $this->returnJson();
     }
 
     public function focus(RequestInterface $request)
