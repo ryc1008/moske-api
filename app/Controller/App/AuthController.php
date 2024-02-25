@@ -59,8 +59,10 @@ class AuthController extends CommonController
             $data['vip_id'] = 1;//默认为游客
             $data['code'] = invite_code();//生成邀请码
             $data['free_num'] = setting('free_video');//每日免费观影数量
+            logger_debug($data);
             //TODO 未做 查询邀请人ID
             $user = User::create($data);//create方法将返回保存的模型实例
+            logger_debug($user);
             $data['userid'] = $user['id'];
             //注册队列[更新用户登录数据 | 生成流量记录 | 生成小时记录]
             QueueService::push(new RegisterJob($data));
