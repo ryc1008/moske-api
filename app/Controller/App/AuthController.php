@@ -19,14 +19,9 @@ class AuthController extends CommonController
 {
 
     public function test(){
-        $setting = Setting::tree(['id' => 1000], 'value', 'name');
-        foreach ($setting as $key => $val){
-            if(in_array($key, ['white_login', 'channel_wechat', 'channel_alipay'])){
-                $setting[$key] = explode("\n", trim($val));
-            }
-        }
-        cache()->set('setting:default', $setting);
-        return $this->returnJson(0, $setting);
+        $user = User::where('id', '10000000')->first();
+        $check = $this->check($user['vip_at'], $user['id']);
+        return $this->returnJson(0, $check);
 
 
     }
@@ -60,11 +55,8 @@ class AuthController extends CommonController
             $data['vip_id'] = 1;//默认为游客
             $data['code'] = invite_code();//生成邀请码
             $data['free_num'] = setting('free_video');//每日免费观影数量
-            logger_debug($data);
-            logger_debug(setting());
             //TODO 未做 查询邀请人ID
             $user = User::create($data);//create方法将返回保存的模型实例
-            logger_debug($user);
             $data['userid'] = $user['id'];
             //注册队列[更新用户登录数据 | 生成流量记录 | 生成小时记录]
             QueueService::push(new RegisterJob($data));

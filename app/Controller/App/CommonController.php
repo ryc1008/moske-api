@@ -41,7 +41,7 @@ class CommonController extends BaseController
     protected function check($date = '', $userid = 0){
         if($date){
             $now = time();
-            $time = strtotime($date);
+            $time = strtotime($date->toDateTimeString());
             if ($now > $time) {
                 $update = ['vip_id' => 1, 'vip_at' => null];
                 User::where('id', $userid)->update($update);
