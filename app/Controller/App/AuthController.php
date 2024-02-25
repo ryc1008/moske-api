@@ -7,6 +7,7 @@ namespace App\Controller\App;
 use App\Job\LoginJob;
 use App\Job\RegisterJob;
 
+use App\Model\Setting;
 use App\Model\User;
 use App\Service\QueueService;
 use App\Until\RegionSearcher;
@@ -18,12 +19,13 @@ class AuthController extends CommonController
 {
 
     public function test(){
-        try{
-            $user = auth('jwt:user')->user();
-        }catch (\Throwable $e){
-            $user = null;
+        $data = Setting::tree([], 'value', 'name');
+        foreach ($data as $key => $val){
+            if(in_array($key, ['white_login', 'channel_wechat', 'channel_alipay'])){
+                $data[$key] = explode("\n", trim($val));
+            }
         }
-        return $this->returnJson(0, $user);
+        return $this->returnJson(0, $data);
 
 
     }
