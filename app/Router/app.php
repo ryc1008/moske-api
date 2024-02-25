@@ -24,7 +24,7 @@ Router::addGroup('/app',function (){
         Router::get('/list', 'App\Controller\App\PlayletController@list');
         Router::post('/praise', 'App\Controller\App\PlayletController@praise');
         Router::post('/favor', 'App\Controller\App\PlayletController@favor');
-        Router::post('/focus', 'App\Controller\App\PlayletController@focus');
+        Router::post('/follow', 'App\Controller\App\PlayletController@follow');
     });
 
     //直播

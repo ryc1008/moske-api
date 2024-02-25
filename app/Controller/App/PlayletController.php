@@ -7,6 +7,7 @@ namespace App\Controller\App;
 use App\Job\IncJob;
 use App\Job\RegisterJob;
 use App\Model\Playlet;
+use App\Model\Type;
 use App\Model\UserBuy;
 use App\Model\UserFavor;
 use App\Model\UserFollow;
@@ -25,7 +26,7 @@ class PlayletController extends CommonController
     {
         $data = $request->all();
         $params['page'] = $data['page'] ?? 1;
-        if($data['tab'] == 'focus'){
+        if($data['tab'] == 'follow'){
             $params['type_id'] = [10040, 10041];
             $params['status'] = [Playlet::STATUS_1, Playlet::STATUS_2];
         }else{
@@ -53,7 +54,7 @@ class PlayletController extends CommonController
             $praise = $this->isPraise($user['id'], $item['id'], $model);
             $user['is_praise'] = $praise ? 1 : 0;
             //是否关注人物（类目）
-            $follow = $this->isFollow($user['id'], $item['id'], $model);
+            $follow = $this->isFollow($user['id'], $item['type_id'], $model);
             $user['is_follow'] = $follow ? 1 : 0;
             $item['user'] = $user;
             $item['guid'] = uuid();
@@ -133,7 +134,7 @@ class PlayletController extends CommonController
         return $this->returnJson();
     }
 
-    public function focus(RequestInterface $request)
+    public function follow(RequestInterface $request)
     {
         $id = (int)$request->post('id', 0);
         $user = $this->user();
@@ -141,13 +142,13 @@ class PlayletController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        $info = Type::where('status',Type::STATUS_1)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
         }
         $model = $this->model($this->m);
-        //是否已经关注
+        //是否已经关注(这里关注的是类目的信息)
         $praise = UserFollow::where('user_id', $userid)
             ->where('good_id', $id)
             ->where('model', $model)->first();
