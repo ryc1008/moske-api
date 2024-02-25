@@ -97,8 +97,8 @@ class Playlet extends Base
                 if(isset($params['status']) && $params['status']){
                     $query->whereIn('status', $params['status']);
                 }
-                if(isset($params['tid']) && $params['tid']){
-                    $query->whereIn('type_id', $params['tid']);
+                if(isset($params['type_id']) && $params['type_id']){
+                    $query->whereIn('type_id', $params['type_id']);
                 }
                 if(isset($params['id']) && $params['id']){
                     $query->whereIn('id', $params['id']);

@@ -21,7 +21,7 @@ class PlayletController extends CommonController
         $data = $request->all();
         $params['page'] = $data['page'] ?? 1;
         if($data['tab'] == 'focus'){
-            $params['type_id'] = [10039, 10041];
+            $params['type_id'] = [10040, 10041];
             $params['status'] = [Playlet::STATUS_1, Playlet::STATUS_2];
         }else{
             $params['status'] = [Playlet::STATUS_2];
@@ -51,6 +51,7 @@ class PlayletController extends CommonController
             $item['playing'] = false;
             $ids[] = $item['id'];
         }
+        //这个写到进程中去吧，太慢了
         //更新自身show值
         Playlet::whereIn('id', $ids)->increment('show');
         return $this->returnJson(0, $list);
