@@ -19,13 +19,14 @@ class AuthController extends CommonController
 {
 
     public function test(){
-        $data = Setting::tree([], 'value', 'name');
-        foreach ($data as $key => $val){
+        $setting = Setting::tree(['id' => 1000], 'value', 'name');
+        foreach ($setting as $key => $val){
             if(in_array($key, ['white_login', 'channel_wechat', 'channel_alipay'])){
-                $data[$key] = explode("\n", trim($val));
+                $setting[$key] = explode("\n", trim($val));
             }
         }
-        return $this->returnJson(0, $data);
+        cache()->set('setting:default', $setting);
+        return $this->returnJson(0, $setting);
 
 
     }
