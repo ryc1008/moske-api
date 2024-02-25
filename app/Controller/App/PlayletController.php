@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\App;
 
+use App\Job\IncJob;
+use App\Job\RegisterJob;
 use App\Model\Playlet;
-use App\Model\UserBuy;
-use App\Model\UserFavor;
-use App\Model\UserPraise;
-use Hyperf\Collection\Collection;
+use App\Service\QueueService;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\Paginator\Paginator;
 
 
 class PlayletController extends CommonController
@@ -49,11 +47,9 @@ class PlayletController extends CommonController
             $item['guid'] = uuid();
             $item['state'] = 'pause';
             $item['playing'] = false;
-            $ids[] = $item['id'];
+            //这个写到进程中去吧，太慢了: 更新自身show值
+            QueueService::push(new IncJob(['id' => $item['id'], 'model' => 'playlet']));
         }
-        //这个写到进程中去吧，太慢了
-        //更新自身show值
-        Playlet::whereIn('id', $ids)->increment('show');
         return $this->returnJson(0, $list);
     }
 
