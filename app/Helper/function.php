@@ -277,7 +277,7 @@ if (! function_exists('setting')) {
     {
         $setting = cache()->get('setting:default');
         if(!$setting){
-            $data = Setting::list();
+            $data = Setting::tree([], 'name');
             cache()->set('setting:default', $data);
         }
         return $setting[$key] ?: '';
