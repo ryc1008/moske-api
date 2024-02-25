@@ -22,7 +22,9 @@ Router::addGroup('/app',function (){
     //短剧
     Router::addGroup('/playlet',function (){
         Router::get('/list', 'App\Controller\App\PlayletController@list');
-        Router::get('/info', 'App\Controller\App\PlayletController@info');
+        Router::post('/praise', 'App\Controller\App\PlayletController@praise');
+        Router::post('/favor', 'App\Controller\App\PlayletController@favor');
+        Router::post('/focus', 'App\Controller\App\PlayletController@focus');
     });
 
     //直播

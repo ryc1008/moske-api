@@ -57,7 +57,7 @@ class CommonController extends BaseController
      * @param $model
      * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
      */
-    protected function isBuy($userid = 0, $gid = 0, $model = ''){
+    protected function isBuy($userid = 0, $gid = 0, $model = 0){
         return UserBuy::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
     }
 
@@ -68,7 +68,7 @@ class CommonController extends BaseController
      * @param $model
      * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
      */
-    protected function isFavor($userid = 0, $gid = 0, $model = ''){
+    protected function isFavor($userid = 0, $gid = 0, $model = 0){
         return UserFavor::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
     }
 
@@ -79,10 +79,22 @@ class CommonController extends BaseController
      * @param $model
      * @return \Hyperf\Database\Model\Builder|\Hyperf\Database\Model\Model|object|null
      */
-    protected function isPraise($userid = 0, $gid = 0, $model = ''){
+    protected function isPraise($userid = 0, $gid = 0, $model = 0){
         return UserPraise::where('user_id', $userid)->where('good_id', $gid)->where('model', $model)->first();
     }
 
+    /**
+     * 获取模型标识
+     * @param $str
+     * @return int
+     */
+    protected function model($str = ''){
+        $model = [
+            'playlet' => 1, //短剧
+            'live' => 2, //直播
+        ];
+        return $model[$str];
+    }
 
 
 
