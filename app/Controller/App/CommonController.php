@@ -19,7 +19,8 @@ class CommonController extends BaseController
      */
     protected function user(){
         try{
-            $auth = auth('jwt:user')->user();
+            $auth = User::find(auth('jwt:user')->id(), ['id', 'vip_id', 'balance', 'vip_at']);
+//            $auth = auth('jwt:user')->user();//这个数据
             $check = $this->check($auth['vip_at'], $auth['id']);
             if ($check) {
                 $auth['vip_id'] = 1;
