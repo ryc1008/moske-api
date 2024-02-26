@@ -8,6 +8,7 @@ use App\Job\IncJob;
 use App\Job\RegisterJob;
 use App\Model\Playlet;
 use App\Model\Type;
+use App\Model\User;
 use App\Model\UserBuy;
 use App\Model\UserFavor;
 use App\Model\UserFollow;
