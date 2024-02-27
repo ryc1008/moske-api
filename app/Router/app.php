@@ -37,6 +37,7 @@ Router::addGroup('/app',function (){
     //游戏
     Router::addGroup('/game',function (){
         Router::get('/list', 'App\Controller\App\GameController@list');
+        Router::get('/login', 'App\Controller\App\GameController@login');
     });
 
 

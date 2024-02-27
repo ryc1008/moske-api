@@ -19,16 +19,16 @@ class CommonController extends BaseController
      */
     protected function user(){
         try{
-            $auth = User::find(auth('jwt:user')->id(), ['id', 'vip_id', 'balance', 'vip_at']);
+            $auth = User::find(auth('jwt:user')->id(), ['id', 'vip_id', 'balance', 'vip_at', 'username']);
 //            $auth = auth('jwt:user')->user();//这个数据
             $check = $this->check($auth['vip_at'], $auth['id']);
             if ($check) {
                 $auth['vip_id'] = 1;
                 $auth['vip_at'] = null;
             }
-            $user = ['id' => $auth['id'], 'vip_id' => $auth['vip_id'], 'balance' => $auth['balance']];
+            $user = ['id' => $auth['id'], 'vip_id' => $auth['vip_id'], 'balance' => $auth['balance'], 'username'=> $auth['username']];
         }catch (\Throwable $e){
-            $user = ['id' => 0, 'vip_id' => 0, 'balance' => 0];
+            $user = ['id' => 0, 'vip_id' => 0, 'balance' => 0, 'username'=> ''];
         }
         return $user;
     }

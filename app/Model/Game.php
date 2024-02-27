@@ -13,10 +13,12 @@ use Hyperf\Database\Model\Relations\Relation;
  * @property string $name 名称
  * @property string $url 链接
  * @property string $icon 图标
+ * @property int $kind_id 开元KindID
  * @property int $type_id 类目ID
  * @property int $status 状态：1正常2锁定
  * @property \Carbon\Carbon $created_at 创建时间
  * @property \Carbon\Carbon $updated_at 更新时间
+ * @property-read null|Type $type 
  */
 class Game extends Base
 {
@@ -28,12 +30,12 @@ class Game extends Base
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'name', 'url', 'icon', 'type_id', 'status', 'created_at', 'updated_at'];
+    protected array $fillable = ['id', 'name', 'url', 'icon', 'kind_id', 'type_id', 'status', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'type_id' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'kind_id' => 'integer', 'type_id' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function type(){
         return $this->belongsTo(Type::class,'type_id', 'id');
