@@ -41,7 +41,7 @@ class GameController extends CommonController
             'king_id' => $kingId,
             'ip' => '58.11.11.84' //58.11.11.84 $ip
         ]);
-        return $this->returnJson(0, $target);
+        return $this->returnJson(0, $target.'&jumpType=2');
 
 
 
