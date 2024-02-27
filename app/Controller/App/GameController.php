@@ -35,13 +35,13 @@ class GameController extends CommonController
         $header = $request->getHeaders();
         $ip = get_real_ip($header);
         $game = new GameInterface();
-        $result = $game->login([
+        $target = $game->login([
             'account' => $user['id'],
             'platform' => $platform,
             'king_id' => $kingId,
             'ip' => '58.11.11.84' //58.11.11.84 $ip
         ]);
-        return $this->returnJson(0, $result);
+        return $this->returnJson(0, $target);
 
 
 

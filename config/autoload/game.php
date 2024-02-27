@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 return [
     'default' =>[
-        'agent' => 60042,
-        'des_key' => 'FE4E6DEB7B2C710A',
-        'md5_key' => '379E041C7D21674C',
-        'api_url' => 'https://channel.tzvolvo.com/channelHandle',
-        'record_url' => 'https://record.tzvolvo.com/getRecordHandle',
-        'line_code' => 'lc60029',
+        'agent' => '60029',//代理编号
+        'des_key' => 'E4A47FC56B2A195D',//MD5密钥
+        'md5_key' => 'CE0ABD95EE616130',//DES密钥
+        'api_url' => 'https://channel.tzvolvo.com/channelHandle', //api接口URL
+        'record_url' => 'https://record.tzvolvo.com/getRecordHandle', //拉单独立接口URL
+        'line_code' => 'lc60029', //linecode，格式lc+代理编号
     ]
 ];

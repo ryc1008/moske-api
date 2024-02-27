@@ -35,23 +35,23 @@ class GameInterface{
     }
 
     protected function request($data){
-//        switch ($data['s']){
-//            case 0: // login
-//                $params = http_build_query($data);
-//                break;
-//        }
         $url = $data['s'] == 6  ? $this->config['record_url'] : $this->config['api_url'];
-//        $result = ClientService::request($url, $data);
         $timestamp = (int)(microtime(true) * 1000);
-        $url .= '?' . http_build_query([
-                'agent' => $this->config['agent'],
-                'timestamp' => $timestamp,
-                'param' => $this->opensslEncode($this->config['des_key'], http_build_query($data)),
-                'key' => md5($this->config['agent'] . $timestamp . $this->config['md5_key'])
-            ]);
-        $result = $this->curl_get_content($url);
-        return $result;
+        $param = [
+            'agent' => $this->config['agent'],
+            'timestamp' => $timestamp,
+            'param' => $this->opensslEncode($this->config['des_key'], http_build_query($data)),
+            'key' => md5($this->config['agent'] . $timestamp . $this->config['md5_key'])
+        ];
+        $url .= '?' . http_build_query($param);
+        $result = ClientService::request($url, $param);// post 第二个参数可能是这样写['form_params' => $param]
+        $result = json_decode($result->getBody()->getContents(), true);
+        if($result && $result['d']['code']){
+            logger_debug('游戏登录失败：错误码：'.$result['d']['code']);
+        }
+        return $result['d']['url'] ?? '';
     }
+
 
     function opensslEncode($key, $str)
     {
@@ -76,42 +76,6 @@ class GameInterface{
         }
         return substr($text, 0, -1 * $pad);
     }
-
-    protected function curl_get_content($url, $conn_timeout=7, $timeout=15, $user_agent=null)
-    {
-        logger_debug($url);
-        $headers = array(
-            "Accept: application/json",
-            "Cache-Control: no-cache",
-            "Pragma: no-cache",
-            "Accept-Charset: utf-8;q=1"
-        );
-        if ($user_agent === null) {
-            $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
-        }
-        $headers[] = $user_agent;
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-
-        $res = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_errno($ch);
-        curl_close($ch);
-
-//        if (($err) || ($httpcode !== 200)) {
-//            return $err;
-//        }
-        return $res;
-    }
-
 
 
 
