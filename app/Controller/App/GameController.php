@@ -18,14 +18,14 @@ class GameController extends CommonController
         $tid = $request->query('tid');
         $params['status'] = Game::STATUS_1;
         $params['tid'] = $tid;
-        $fields = ['id', 'name', 'url', 'icon', 'king_id'];
+        $fields = ['id', 'name', 'url', 'icon', 'kind_id'];
         $list = Game::app($params, $fields);
         return $this->returnJson(0, $list);
     }
 
 
     public function login(RequestInterface $request){
-        $kingId = $request->query('kid', 0);//游戏ID
+        $kindId = $request->query('kid', 0);//游戏ID
         $platform = $request->query('platform', '');//平台
         $user = $this->user();
         if(!$user['id']){
@@ -38,7 +38,7 @@ class GameController extends CommonController
         $target = $game->login([
             'account' => $user['id'],
             'platform' => $platform,
-            'king_id' => $kingId,
+            'kind_id' => $kindId,
             'ip' => '58.11.11.84' //58.11.11.84 $ip
         ]);
         return $this->returnJson(0, $target);

@@ -21,7 +21,7 @@ class GameInterface{
             'account' => $user['account'],
             'money' => 0,
             'lineCode' => $this->config['line_code'],
-            'KindID'=> $user['king_id'],
+            'KindID'=> $user['kind_id'],
             'ip' => $user['ip'],
             'orderid' => $this->order($user),
             'lang' => 'zh-CN'
