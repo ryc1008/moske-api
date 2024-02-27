@@ -49,7 +49,8 @@ class GameInterface{
         if($result && $result['d']['code']){
             logger_debug('游戏登录失败：错误码：'.$result['d']['code']);
         }
-        return $result['d']['url'] ?? '';
+        //jumpType=1 表示不显示返回到主页大厅，独立成游戏
+        return $result['d']['url'].'&jumpType=1' ?? '';
     }
 
 

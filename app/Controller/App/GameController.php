@@ -18,7 +18,7 @@ class GameController extends CommonController
         $tid = $request->query('tid');
         $params['status'] = Game::STATUS_1;
         $params['tid'] = $tid;
-        $fields = ['id', 'name', 'url', 'icon'];
+        $fields = ['id', 'name', 'url', 'icon', 'king_id'];
         $list = Game::app($params, $fields);
         return $this->returnJson(0, $list);
     }
@@ -41,7 +41,7 @@ class GameController extends CommonController
             'king_id' => $kingId,
             'ip' => '58.11.11.84' //58.11.11.84 $ip
         ]);
-        return $this->returnJson(0, $target.'&jumpType=1');
+        return $this->returnJson(0, $target);
 
 
 
