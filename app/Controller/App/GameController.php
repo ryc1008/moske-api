@@ -27,11 +27,11 @@ class GameController extends CommonController
     public function login(RequestInterface $request){
         $kingId = $request->query('kid', 0);//游戏ID
         $platform = $request->query('platform', '');//平台
-//        $user = $this->user();
-//        if(!$user['id']){
-//            return $this->returnJson(1, null, '未登录');
-//        }\
-        $user = User::find(10000011);
+        $user = $this->user();
+        if(!$user['id']){
+            return $this->returnJson(1, null, '未登录');
+        }
+//        $user = User::find(10000011);
         $header = $request->getHeaders();
         $ip = get_real_ip($header);
         $game = new GameInterface();
