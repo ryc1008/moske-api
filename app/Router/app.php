@@ -34,7 +34,10 @@ Router::addGroup('/app',function (){
         Router::get('/info', 'App\Controller\App\LiveController@info');
     });
 
-
+    //游戏
+    Router::addGroup('/game',function (){
+        Router::get('/list', 'App\Controller\App\GameController@list');
+    });
 
 
 //    Router::addGroup('',function (){

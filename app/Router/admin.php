@@ -189,6 +189,18 @@ Router::addGroup('/admin',function (){
                 Router::post('/destroy', 'App\Controller\Admin\LadyController@destroy');
             });
         });
+        //游戏中心
+        Router::addGroup('',function (){
+            //游戏
+            Router::addGroup('/game',function (){
+                Router::get('/list', 'App\Controller\Admin\GameController@list');
+                Router::get('/config', 'App\Controller\Admin\GameController@config');
+                Router::post('/update', 'App\Controller\Admin\GameController@update');
+                Router::post('/lock', 'App\Controller\Admin\GameController@lock');
+                Router::post('/active', 'App\Controller\Admin\GameController@active');
+                Router::post('/destroy', 'App\Controller\Admin\GameController@destroy');
+            });
+        });
         //权限管理
         Router::addGroup('',function (){
             //管理员
