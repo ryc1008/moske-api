@@ -25,7 +25,7 @@ use Hyperf\Database\Model\Relations\Relation;
  * @property int $sale 销售量
  * @property int $type_id 类目id
  * @property int $show 人气数
- * @property int $hits 点赞数
+ * @property int $favor 收藏数
  * @property int $status 状态1正常2推荐3锁定
  * @property \Carbon\Carbon $created_at 创建时间
  * @property \Carbon\Carbon $updated_at 更新时间
@@ -40,12 +40,12 @@ class Lady extends Base
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'province', 'city', 'money', 'sale', 'type_id', 'show', 'hits', 'status', 'created_at', 'updated_at'];
+    protected array $fillable = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'province', 'city', 'money', 'sale', 'type_id', 'show', 'favor', 'status', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'money' => 'integer', 'sale' => 'integer', 'type_id' => 'integer', 'show' => 'integer', 'hits' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'money' => 'integer', 'sale' => 'integer', 'type_id' => 'integer', 'show' => 'integer', 'favor' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     const STATUS_1 = 1;
     const STATUS_2 = 2;
@@ -85,5 +85,18 @@ class Lady extends Base
             }])
             ->orderBy('id', 'desc')
             ->paginate($this->limit);
+    }
+
+    protected function app($params = [], $fields = ['*'], $limit = 8){
+        return $this->select($fields)
+            ->where(function ($query) use ($params) {
+                if(isset($params['status']) && $params['status']){
+                    $query->whereIn('status', $params['status']);
+                }
+                if(isset($params['city']) && $params['city']){
+                    $query->where('city', $params['city']);
+                }
+            })->orderBy($params['sort'], 'desc')
+            ->paginate($limit);
     }
 }

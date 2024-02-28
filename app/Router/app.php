@@ -22,6 +22,13 @@ Router::addGroup('/app',function (){
         Router::get('/forum', 'App\Controller\App\TypeController@forum');
     });
 
+    //楼凤
+    Router::addGroup('/lady',function (){
+        Router::get('/list', 'App\Controller\App\LadyController@list');
+        Router::get('/info', 'App\Controller\App\LadyController@info');
+        Router::post('/favor', 'App\Controller\App\LadyController@favor');
+        Router::post('/buy', 'App\Controller\App\LadyController@buy');
+    });
 
 
     //短剧
