@@ -17,7 +17,12 @@ Router::addGroup('/app',function (){
     Router::get('/advert', 'App\Controller\App\AdvertController@index');
 
     //类目
-    Router::get('/type', 'App\Controller\App\TypeController@index');
+    Router::addGroup('/type',function (){
+        Router::get('/list', 'App\Controller\App\TypeController@list');
+        Router::get('/forum', 'App\Controller\App\TypeController@forum');
+    });
+
+
 
     //短剧
     Router::addGroup('/playlet',function (){
@@ -37,7 +42,7 @@ Router::addGroup('/app',function (){
     //游戏
     Router::addGroup('/game',function (){
         Router::get('/list', 'App\Controller\App\GameController@list');
-        Router::get('/login', 'App\Controller\App\GameController@login');
+        Router::post('/login', 'App\Controller\App\GameController@login');
     });
 
 

@@ -15,6 +15,6 @@ class ClientService
         $url = $arguments[0] ?? '';
         $params = $arguments[1] ?? [];
         $options = ['base_uri' => $url];
-        return $container->get(ClientFactory::class)->create($options)->request($method, $url, $params);
+        return $container->get(ClientFactory::class)->create($options)->$func($method, $url, $params);
     }
 }
