@@ -105,6 +105,7 @@ class CommonController extends BaseController
         $model = [
             'playlet' => 1, //短剧
             'live' => 2, //直播
+            'lady' => 3, //楼凤
         ];
         return $model[$str];
     }

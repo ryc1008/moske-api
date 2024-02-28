@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Job;
 
+use App\Model\Lady;
 use App\Model\Playlet;
 use App\Model\User;
 use App\Until\RegionSearcher;
@@ -34,6 +35,9 @@ class IncJob extends Job
             switch ($data['model']){
                 case 'playlet':
                     Playlet::where('id', $data['id'])->increment('show');
+                    break;
+                case 'lady':
+                    Lady::where('id', $data['id'])->increment('show');
                     break;
             }
         }else{

@@ -26,9 +26,9 @@ class TypeController extends CommonController
             ['id' => 'lady',  'name' => '楼凤'],
             ['id' => 'story', 'name' => '小说'],
             ['id' => 'photo', 'name' => '套图'],
-            ['id' => 'comic', 'name' => '漫画'],
-            ['id' => 'novel', 'name' => '长篇'],
-            ['id' => 'sound', 'name' => '有声'],
+//            ['id' => 'comic', 'name' => '漫画'],
+//            ['id' => 'novel', 'name' => '长篇'],
+//            ['id' => 'sound', 'name' => '有声'],
         ]);
     }
 }

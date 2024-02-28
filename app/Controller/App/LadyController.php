@@ -23,52 +23,49 @@ class LadyController extends CommonController
     {
         $data = $request->all();
         $kwd = $data['kwd'] ?? '';
-        $params['city'] = $data['city'] ?? '';
+        $city = $data['city'] ?? '';
         $params['status'] = [Lady::STATUS_1, Lady::STATUS_2];
         $params['sort'] = 'id';
+        $params['city'] = $city == '全国' ? null : $city;
         if($kwd == 'default'){
             $params['sort'] = 'show';
         }
         if($kwd == 'good'){
             $params['status'] = [Lady::STATUS_2];
         }
-        $fields = ['id', 'title', 'thumb', 'city', 'money', 'show'];
+        $fields = ['id', 'title', 'thumb', 'money', 'show', 'favor', 'price'];
         $list = Lady::app($params, $fields, 8);
         return $this->returnJson(0, $list);
     }
 
-    public function info(){
-        //必须是VIP，免费才能看
-//        $user = $this->user();
-//        $model = $this->model($this->m);
-//        $user['is_buy'] = 0;//不是会员,不管免不免费，都是未购买
-//        if($user['vip_id'] > 1){
-//            $user['is_buy'] = 1;//是会员, 免费设置成已购买
-//        }
-//        //不管是不是会员，购买了的肯定都能看（这里不建议把需要花钱的改成免费的，可能造成别人不是VIP了，之前花了钱不能再继续看了）
-//        if($item['money'] > 0){
-//            //需要钻石的必须是购买才能看
-//            $buy = $this->isBuy($user['id'], $item['id'], $model);
-//            if(!$buy){
-//                $user['is_buy'] = 0;
-//            }
-//        }
-//
-//        //是否收藏
-//        $favor = $this->isFavor($user['id'], $item['id'], $model);
-//        $user['is_favor'] = $favor ? 1 : 0;
-//        //是否点赞
-//        $praise = $this->isPraise($user['id'], $item['id'], $model);
-//        $user['is_praise'] = $praise ? 1 : 0;
-//        //是否关注人物（类目）
-//        $follow = $this->isFollow($user['id'], $item['type_id'], $model);
-//        $user['is_follow'] = $follow ? 1 : 0;
-//        $item['user'] = $user;
-//        $item['guid'] = uuid();
-//        $item['state'] = 'pause';
-//        $item['playing'] = false;
-        //这个写到进程中去吧，太慢了: 更新自身show值
-        QueueService::push(new IncJob(['id' => $item['id'], 'model' => $this->m]));
+    public function info(RequestInterface $request){
+        $id = (int)$request->query('id', 0);
+        if(!$id){
+            return $this->returnJson(1, null, '参数错误');
+        }
+        $fields = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'city', 'money', 'favor'];
+        $info = Lady::where('status','<>', Lady::STATUS_3)->find($id, $fields);
+        if(!$info){
+            return $this->returnJson(1, null, '数据不存在');
+        }
+        $user = $this->user();
+        $model = $this->model($this->m);
+        //需要钻石的必须是购买才能看
+        $user['is_buy'] = 0;
+        $buy = $this->isBuy($user['id'], $info['id'], $model);
+        if($buy){
+            $user['is_buy'] = 1;
+        }
+        //是否收藏
+        $favor = $this->isFavor($user['id'], $info['id'], $model);
+        $user['is_favor'] = $favor ? 1 : 0;
+        $info['user'] = $user;
+        $info['content'] = explode("\n", trim($info['content']));
+        $info['content'] = array_merge([$info['thumb']], $info['content']);
+            //增加浏览量
+        QueueService::push(new IncJob(['id' => $info['id'], 'model' => $this->m]));
+        return $this->returnJson(0, $info, $id);
+
     }
 
 
@@ -80,7 +77,7 @@ class LadyController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        $info = Lady::where('status','<>', Lady::STATUS_3)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
@@ -113,7 +110,7 @@ class LadyController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        $info = Lady::where('status','<>', Lady::STATUS_3)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
