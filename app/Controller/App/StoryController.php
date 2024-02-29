@@ -10,6 +10,7 @@ use App\Model\User;
 use App\Model\UserBuy;
 use App\Model\UserFavor;
 use App\Service\QueueService;
+use Hyperf\Database\Model\Relations\Relation;
 use Hyperf\DbConnection\Db;
 use Hyperf\HttpServer\Contract\RequestInterface;
 
@@ -49,8 +50,11 @@ class StoryController extends CommonController
         if(!$id){
             return $this->returnJson(1, null, '参数错误');
         }
-        $fields = ['id', 'title', 'thumb', 'content', 'type_id', 'show', 'favor'];
-        $info = Story::where('status','<>', Story::STATUS_3)->find($id, $fields);
+        $fields = ['id', 'title', 'content', 'type_id', 'show', 'favor'];
+        $info = Story::where('status','<>', Story::STATUS_3)
+            ->with(['type' => function (Relation $relation) {
+                $relation->getQuery()->select(['id', 'title']);
+            }])->find($id, $fields);
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
         }
