@@ -30,6 +30,22 @@ Router::addGroup('/app',function (){
         Router::post('/buy', 'App\Controller\App\LadyController@buy');
     });
 
+    //小说
+    Router::addGroup('/story',function (){
+        Router::get('/home', 'App\Controller\App\StoryController@home');
+        Router::get('/list', 'App\Controller\App\StoryController@list');
+        Router::get('/info', 'App\Controller\App\StoryController@info');
+        Router::post('/favor', 'App\Controller\App\StoryController@favor');
+    });
+
+    //套图
+    Router::addGroup('/photo',function (){
+        Router::get('/home', 'App\Controller\App\PhotoController@home');
+        Router::get('/list', 'App\Controller\App\PhotoController@list');
+        Router::get('/info', 'App\Controller\App\PhotoController@info');
+        Router::post('/favor', 'App\Controller\App\PhotoController@favor');
+    });
+
 
     //短剧
     Router::addGroup('/playlet',function (){

@@ -215,4 +215,30 @@ abstract class Base extends Model
             $this->where('id', $id)->decrement($field, $number);
         }
     }
+
+    /**
+     * 最新
+     * @param $fields
+     * @param $limit
+     * @return \Hyperf\Collection\Collection
+     */
+    protected function lately($fields = ['*'], $limit = 8){
+        return $this->whereIn('status', [self::STATUS_1, self::STATUS_2])
+            ->orderBy('id', 'desc')
+            ->take($limit)
+            ->get($fields);
+    }
+
+    /**
+     * 推荐
+     * @param $fields
+     * @param $limit
+     * @return \Hyperf\Collection\Collection
+     */
+    protected function good($fields = ['*'], $limit = 8){
+        return $this->where('status', self::STATUS_2)
+            ->orderBy('id', 'desc')
+            ->take($limit)
+            ->get($fields);
+    }
 }

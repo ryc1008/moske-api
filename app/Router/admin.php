@@ -143,6 +143,7 @@ Router::addGroup('/admin',function (){
                 Router::post('/update', 'App\Controller\Admin\StoryController@update');
                 Router::post('/lock', 'App\Controller\Admin\StoryController@lock');
                 Router::post('/active', 'App\Controller\Admin\StoryController@active');
+                Router::post('/good', 'App\Controller\Admin\StoryController@good');
                 Router::post('/destroy', 'App\Controller\Admin\StoryController@destroy');
             });
             //长篇小说及章节
@@ -154,6 +155,7 @@ Router::addGroup('/admin',function (){
                 Router::post('/update', 'App\Controller\Admin\NovelController@update');
                 Router::post('/lock', 'App\Controller\Admin\NovelController@lock');
                 Router::post('/active', 'App\Controller\Admin\NovelController@active');
+                Router::post('/good', 'App\Controller\Admin\NovelController@good');
                 Router::post('/destroy', 'App\Controller\Admin\NovelController@destroy');
                 Router::post('/delete', 'App\Controller\Admin\NovelController@delete');
             });
@@ -167,6 +169,7 @@ Router::addGroup('/admin',function (){
                 Router::post('/lock', 'App\Controller\Admin\ComicController@lock');
                 Router::post('/active', 'App\Controller\Admin\ComicController@active');
                 Router::post('/destroy', 'App\Controller\Admin\ComicController@destroy');
+                Router::post('/good', 'App\Controller\Admin\ComicController@good');
                 Router::post('/delete', 'App\Controller\Admin\ComicController@delete');
             });
             //图片
@@ -176,6 +179,7 @@ Router::addGroup('/admin',function (){
                 Router::post('/update', 'App\Controller\Admin\PhotoController@update');
                 Router::post('/lock', 'App\Controller\Admin\PhotoController@lock');
                 Router::post('/active', 'App\Controller\Admin\PhotoController@active');
+                Router::post('/good', 'App\Controller\Admin\PhotoController@good');
                 Router::post('/destroy', 'App\Controller\Admin\PhotoController@destroy');
             });
             //楼凤

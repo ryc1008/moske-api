@@ -5,6 +5,7 @@ namespace App\Job;
 
 use App\Model\Lady;
 use App\Model\Playlet;
+use App\Model\Story;
 use App\Model\User;
 use App\Until\RegionSearcher;
 use Carbon\Carbon;
@@ -39,6 +40,10 @@ class IncJob extends Job
                 case 'lady':
                     Lady::where('id', $data['id'])->increment('show');
                     break;
+                case 'story':
+                    Story::where('id', $data['id'])->increment('show');
+                    break;
+
             }
         }else{
             logger_write('job-increment', $data, 'error', 'process');

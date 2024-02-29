@@ -12,11 +12,13 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 class TypeController extends CommonController
 {
 
-    public function list()
+    public function list(RequestInterface $request)
     {
-        $pluck = Type::where('parent_id', 10001)
+        $pid = (int)$request->query('pid', 0);
+        $pluck = Type::where('parent_id', $pid)
             ->where('status', Type::STATUS_1)
-            ->orderBy('sort')->get(['title as name', 'id']);
+            ->orderBy('sort')
+            ->get(['title as name', 'id', 'icon']);
         return $this->returnJson(0, $pluck);
     }
 
