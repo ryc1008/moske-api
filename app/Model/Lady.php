@@ -20,7 +20,8 @@ use Hyperf\Database\Model\Relations\Relation;
  * @property string $number 数量
  * @property string $blurb 介绍
  * @property string $province 省份
- * @property string $city 城市
+ * @property string $contact 联系方式
+ * @property string $city 地区
  * @property int $money 价格
  * @property int $sale 销售量
  * @property int $type_id 类目id
@@ -29,6 +30,7 @@ use Hyperf\Database\Model\Relations\Relation;
  * @property int $status 状态1正常2推荐3锁定
  * @property \Carbon\Carbon $created_at 创建时间
  * @property \Carbon\Carbon $updated_at 更新时间
+ * @property-read null|Type $type 
  */
 class Lady extends Base
 {
@@ -40,7 +42,7 @@ class Lady extends Base
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'province', 'city', 'money', 'sale', 'type_id', 'show', 'favor', 'status', 'created_at', 'updated_at'];
+    protected array $fillable = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'province', 'contact', 'city', 'money', 'sale', 'type_id', 'show', 'favor', 'status', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.

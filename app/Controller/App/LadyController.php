@@ -43,7 +43,7 @@ class LadyController extends CommonController
         if(!$id){
             return $this->returnJson(1, null, '参数错误');
         }
-        $fields = ['id', 'title', 'thumb', 'content', 'project', 'time', 'price', 'age', 'number', 'blurb', 'city', 'money', 'favor'];
+        $fields = ['id', 'title', 'thumb', 'content', 'project', 'contact', 'time', 'price', 'age', 'number', 'blurb', 'province', 'city', 'money', 'favor'];
         $info = Lady::where('status','<>', Lady::STATUS_3)->find($id, $fields);
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
