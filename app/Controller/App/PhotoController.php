@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Job\IncJob;
-use App\Model\Story;
+use App\Model\Photo;
 use App\Model\UserFavor;
 use App\Service\QueueService;
 use Hyperf\Database\Model\Relations\Relation;
@@ -13,15 +13,15 @@ use Hyperf\DbConnection\Db;
 use Hyperf\HttpServer\Contract\RequestInterface;
 
 
-class StoryController extends CommonController
+class PhotoController extends CommonController
 {
 
-    protected $m = 'story';
+    protected $m = 'photo';
 
     public function home(){
         $fields = ['id', 'title', 'thumb', 'show', 'favor'];
-        $latest = Story::lately($fields);
-        $good = Story::good($fields);
+        $latest = Photo::lately($fields);
+        $good = Photo::good($fields);
         return $this->returnJson(0, ['latest' => $latest, 'good' => $good]);
     }
 
@@ -30,16 +30,16 @@ class StoryController extends CommonController
         $data = $request->all();
         $kwd = $data['kwd'] ?? '';
         $params['tid'] = $data['tid'] ?? 0;
-        $params['status'] = [Story::STATUS_1, Story::STATUS_2];
+        $params['status'] = [Photo::STATUS_1, Photo::STATUS_2];
         $params['sort'] = 'id';
         if($kwd == 'default'){
             $params['sort'] = 'show';
         }
         if($kwd == 'good'){
-            $params['status'] = [Story::STATUS_2];
+            $params['status'] = [Photo::STATUS_2];
         }
         $fields = ['id', 'title', 'thumb', 'show', 'favor'];
-        $list = Story::app($params, $fields);
+        $list = Photo::app($params, $fields);
         return $this->returnJson(0, $list);
     }
 
@@ -48,11 +48,8 @@ class StoryController extends CommonController
         if(!$id){
             return $this->returnJson(1, null, '参数错误');
         }
-        $fields = ['id', 'title', 'content', 'type_id', 'show', 'favor'];
-        $info = Story::where('status','<>', Story::STATUS_3)
-            ->with(['type' => function (Relation $relation) {
-                $relation->getQuery()->select(['id', 'title']);
-            }])->find($id, $fields);
+        $fields = ['id', 'title', 'content'];
+        $info = Photo::where('status','<>', Photo::STATUS_3)->find($id, $fields);
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
         }
@@ -67,6 +64,7 @@ class StoryController extends CommonController
         $favor = $this->isFavor($user['id'], $info['id'], $model);
         $user['is_favor'] = $favor ? 1 : 0;
         $info['user'] = $user;
+        $info['content'] = explode("\n", trim($info['content']));
         //增加浏览量
         QueueService::push(new IncJob(['id' => $info['id'], 'model' => $this->m]));
         return $this->returnJson(0, $info, $id);
@@ -82,7 +80,7 @@ class StoryController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Story::where('status','<>', Story::STATUS_3)->find($id);
+        $info = Photo::where('status','<>', Photo::STATUS_3)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');

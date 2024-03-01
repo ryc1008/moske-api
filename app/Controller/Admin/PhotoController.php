@@ -85,6 +85,22 @@ class PhotoController extends BaseController
             if (!count($ids)) {
                 return $this->returnJson(1, null, 'ID参数必须存在');
             }
+            Photo::store($ids, ['status' => Photo::STATUS_3]);
+            return $this->returnJson(0 , null, '操作成功');
+        } catch (\Throwable $e) {
+            return $this->returnJson(1, null, $e->getMessage());
+        }
+    }
+
+    //推荐
+    public function good(RequestInterface $request)
+    {
+        try {
+            $id = $request->post('id');
+            $ids = is_array($id) ? $id : [$id];
+            if (!count($ids)) {
+                return $this->returnJson(1, null, 'ID参数必须存在');
+            }
             Photo::store($ids, ['status' => Photo::STATUS_2]);
             return $this->returnJson(0 , null, '操作成功');
         } catch (\Throwable $e) {

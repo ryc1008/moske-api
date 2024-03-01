@@ -106,7 +106,8 @@ class CommonController extends BaseController
             'playlet' => 1, //短剧
             'live' => 2, //直播
             'lady' => 3, //楼凤
-            'story' => 4 //短篇小说
+            'story' => 4, //短篇小说
+            'photo' => 5, //套图
         ];
         return $model[$str];
     }

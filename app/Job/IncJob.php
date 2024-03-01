@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Job;
 
 use App\Model\Lady;
+use App\Model\Photo;
 use App\Model\Playlet;
 use App\Model\Story;
 use App\Model\User;
@@ -43,7 +44,9 @@ class IncJob extends Job
                 case 'story':
                     Story::where('id', $data['id'])->increment('show');
                     break;
-
+                case 'photo':
+                    Photo::where('id', $data['id'])->increment('show');
+                    break;
             }
         }else{
             logger_write('job-increment', $data, 'error', 'process');
