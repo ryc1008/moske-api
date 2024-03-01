@@ -112,7 +112,6 @@ class LiveController extends CommonController
     public function follow(RequestInterface $request)
     {
         $id = (int)$request->post('id', 0);
-        logger_debug($id);
         $user = $this->user();
         $userid = $user['id'];
         if(!$userid){
