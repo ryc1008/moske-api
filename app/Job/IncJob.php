@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Job;
 
 use App\Model\Lady;
+use App\Model\Live;
 use App\Model\Photo;
 use App\Model\Playlet;
 use App\Model\Story;
@@ -46,6 +47,9 @@ class IncJob extends Job
                     break;
                 case 'photo':
                     Photo::where('id', $data['id'])->increment('show');
+                    break;
+                case 'live':
+                    Live::where('id', $data['id'])->increment('show');
                     break;
             }
         }else{

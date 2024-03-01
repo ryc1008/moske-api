@@ -62,7 +62,7 @@ class LadyController extends CommonController
         $info['user'] = $user;
         $info['content'] = explode("\n", trim($info['content']));
         $info['content'] = array_merge([$info['thumb']], $info['content']);
-            //增加浏览量
+        //增加浏览量
         QueueService::push(new IncJob(['id' => $info['id'], 'model' => $this->m]));
         return $this->returnJson(0, $info, $id);
 
