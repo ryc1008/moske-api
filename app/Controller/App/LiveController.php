@@ -51,6 +51,9 @@ class LiveController extends CommonController
         if($user['vip_id'] > 1){
             $user['is_buy'] = 1;
         }
+        //是否关注主播
+        $follow = $this->isFollow($user['id'], $info['id'], $model);
+        $user['is_follow'] = $follow ? 1 : 0;
         //是否点赞
         $praise = $this->isPraise($user['id'], $info['id'], $model);
         $user['is_praise'] = $praise ? 1 : 0;
