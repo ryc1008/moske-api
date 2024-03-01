@@ -10,6 +10,7 @@ use App\Model\Live;
 use App\Model\UserFollow;
 use App\Model\UserPraise;
 use App\Service\QueueService;
+use Hyperf\DbConnection\Db;
 use Hyperf\HttpServer\Contract\RequestInterface;
 
 
