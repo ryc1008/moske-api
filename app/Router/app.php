@@ -60,6 +60,8 @@ Router::addGroup('/app',function (){
     Router::addGroup('/live',function (){
         Router::get('/list', 'App\Controller\App\LiveController@list');
         Router::get('/info', 'App\Controller\App\LiveController@info');
+        Router::post('/praise', 'App\Controller\App\PlayletController@praise');
+        Router::post('/follow', 'App\Controller\App\PlayletController@follow');
     });
 
     //游戏

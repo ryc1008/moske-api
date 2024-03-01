@@ -85,7 +85,7 @@ class LiveController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Playlet::where('status','<>', Playlet::STATUS_3)->find($id);
+        $info = Live::where('status','<>', Live::STATUS_3)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
@@ -117,7 +117,7 @@ class LiveController extends CommonController
         if(!$userid){
             return $this->returnJson(1, null, '未登录');
         }
-        $info = Type::where('status',Type::STATUS_1)->find($id);
+        $info = Live::where('status','<>', Live::STATUS_3)->find($id);
         //数据是否存在
         if(!$info){
             return $this->returnJson(1, null, '数据不存在');
