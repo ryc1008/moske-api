@@ -138,4 +138,15 @@ class LiveController extends CommonController
         UserFollow::create($insert);
         return $this->returnJson();
     }
+
+    public function work(RequestInterface $request){
+        $id = (int)$request->post('id', 0);
+        $info = Live::where('status','<>', Live::STATUS_3)->find($id);
+        //数据是否存在
+        if(!$info){
+            return $this->returnJson(1, null, '数据不存在');
+        }
+        $info->update(['work' => Live::WORK_2]);
+        return $this->returnJson();
+    }
 }
