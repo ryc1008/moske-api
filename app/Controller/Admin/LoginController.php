@@ -29,12 +29,12 @@ class LoginController extends BaseController
             $ip = get_real_ip($header);
             $data['ip'] = $ip;
             $data['success'] = false;
-//            //IP白名单,需要后台管理
-//            $whiteList = setting('white_login');
-//            if(!in_array($ip, $whiteList)){
-//                $this->logger($data, $header, 'IP非法不在白名单内');
-//                return $this->returnJson(1, null, '非法操作');
-//            }
+            //IP白名单,需要后台管理
+            $whiteList = setting('white_login');
+            if(!in_array($ip, $whiteList)){
+                $this->logger($data, $header, 'IP非法不在白名单内');
+                return $this->returnJson(1, null, '非法操作');
+            }
             if (!$user) {
                 $this->logger($data, $header, '用户名或者密码错误');
                 return $this->returnJson(1, null, '用户名或者密码错误，请联系管理员');
@@ -48,7 +48,7 @@ class LoginController extends BaseController
             $this->logger($data, $header, '登录成功');
             return $this->returnJson(0, [
                 'token' => $token,
-                'expires_in' => 86000,
+                'expires_in' => setting('jwt_manager_ttl'),
             ], '登录成功，页面跳转种...');
         } catch (\Throwable $e) {
             return $this->returnJson(1, null, $e->getMessage());
