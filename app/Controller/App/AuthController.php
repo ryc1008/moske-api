@@ -20,8 +20,8 @@ class AuthController extends CommonController
 
     public function test(){
         $user = User::where('id', '10000000')->first();
-        $check = $this->check($user['vip_at'], $user['id']);
-        return $this->returnJson(0, $check);
+//        $check = $this->check($user['vip_at'], $user['id']);
+        return $this->returnJson(0, $user);
 
 
     }
