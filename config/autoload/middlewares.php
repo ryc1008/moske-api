@@ -14,7 +14,7 @@ use Gokure\HyperfCors\CorsMiddleware;
  */
 return [
     'http' => [
-        HttpedMiddleware::class,
+//        HttpedMiddleware::class,
     ],
     'ws' => []
 ];
