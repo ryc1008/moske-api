@@ -26,7 +26,7 @@ abstract class Base extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->limit = (int)setting('limit_page');
+        $this->limit = 10;//(int)setting('limit_page')
     }
 
     /**
