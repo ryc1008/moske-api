@@ -9,8 +9,8 @@ namespace App\Model;
 /**
  * @property int $id 
  * @property string $name 名称
- * @property int $money 价格
- * @property int $price 原价格
+ * @property decimal:2 $money 价格
+ * @property decimal:2 $price 原价格
  * @property int $diamond 钻石
  * @property int $give 赠送钻石
  * @property string $title 标题
@@ -35,7 +35,7 @@ class Vip extends Base
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'money' => 'integer', 'price' => 'integer', 'diamond' => 'integer', 'give' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'money' => 'decimal:2', 'price' => 'decimal:2', 'diamond' => 'integer', 'give' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
 
 
