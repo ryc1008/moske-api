@@ -71,6 +71,12 @@ Router::addGroup('/app',function (){
         Router::post('/login', 'App\Controller\App\GameController@login');
     });
 
+    //VIP
+    Router::addGroup('/vip',function (){
+        Router::get('/config', 'App\Controller\App\VipController@config');
+        Router::get('/wallet', 'App\Controller\App\VipController@wallet');
+    });
+
 
 //    Router::addGroup('',function (){
 //        Router::addGroup('/user',function () {

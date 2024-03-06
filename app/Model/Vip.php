@@ -54,4 +54,20 @@ class Vip extends Base
             ->orderBy('id')
             ->paginate($this->limit);
     }
+
+
+    protected function app($params = [], $fields = ['*']){
+        return $this->where(function ($query) use ($params) {
+                if (isset($params['title']) && $params['title']) {
+                    $query->where('title', '<>', '');
+                }
+                if (isset($params['status']) && $params['status']) {
+                    $query->where('status', $params['status']);
+                }
+                if (isset($params['diamond']) && $params['diamond']) {
+                    $query->where('diamond', '<>', '');
+                }
+            })->orderBy('id')
+            ->get($fields);
+    }
 }
