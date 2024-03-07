@@ -35,7 +35,14 @@ class VipController extends CommonController
         ];
         $fields = ['id', 'money', 'diamond', 'give'];
         $list = Vip::app($params, $fields);
-        return $this->returnJson(0, $list);
+        $user = $this->user();
+        $config = [
+            'default_price' => setting('default_price'),
+            'default_type' => setting('default_type'),
+            'payment_wechat' => setting('payment_wechat'),
+            'payment_alipay' => setting('payment_alipay'),
+        ];
+        return $this->returnJson(0, ['list' => $list, 'config' => $config, 'user' => $user]);
     }
 
 }
