@@ -77,6 +77,12 @@ Router::addGroup('/app',function (){
         Router::get('/wallet', 'App\Controller\App\VipController@wallet');
     });
 
+    //滚动消息
+    Router::addGroup('/notice',function (){
+        Router::get('/main', 'App\Controller\App\NoticeController@main');
+        Router::get('/game', 'App\Controller\App\NoticeController@game');
+    });
+
 
 //    Router::addGroup('',function (){
 //        Router::addGroup('/user',function () {
