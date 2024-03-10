@@ -9,6 +9,7 @@ namespace App\Model;
 /**
  * @property int $id 
  * @property string $title 名称
+ * @property string $name 说明
  * @property string $icon 图标
  * @property int $parent_id 上级id
  * @property int $sort 排序
@@ -26,7 +27,7 @@ class Type extends Base
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'title', 'icon', 'parent_id', 'sort', 'status', 'created_at', 'updated_at'];
+    protected array $fillable = ['id', 'title', 'name', 'icon', 'parent_id', 'sort', 'status', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.

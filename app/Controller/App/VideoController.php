@@ -13,6 +13,7 @@ use App\Model\UserBuy;
 use App\Model\UserFavor;
 use App\Model\UserFollow;
 use App\Model\UserPraise;
+use App\Model\Video;
 use App\Service\QueueService;
 use Hyperf\DbConnection\Db;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -27,12 +28,27 @@ class VideoController extends CommonController
     {
         $data = $request->all();
         $params['page'] = $data['page'] ?? 1;
-        if($data['tab'] == 'follow'){
+        $params['gid'] = $data['gid'] ?? 0;
+        if($data['gid'] == 'good'){
             $params['type_id'] = [10040, 10041];
-            $params['status'] = [Playlet::STATUS_1, Playlet::STATUS_2];
-        }else{
-            $params['status'] = [Playlet::STATUS_2];
+            $params['status'] = [Video::STATUS_1, Video::STATUS_2];
         }
+        if($data['gid'] == 'topic'){
+            $params['type_id'] = [10040, 10041];
+            $params['status'] = [Video::STATUS_1, Video::STATUS_2];
+        }
+        $types = [];
+        if(is_numeric($data['gid'])){
+            $types = Type::where('parent_id', $data['gid'])
+                ->where('status', Type::STATUS_1)
+                ->orderBy('sort')
+                ->get(['id', 'title', 'name', 'icon']);
+        }
+
+        return $this->returnJson(0, ['types' => $types], $params);
+//        else{
+//            $params['status'] = [Playlet::STATUS_2];
+//        }
         $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits', 'favor'];
         $list = Playlet::app($params, $fields, 5);
 

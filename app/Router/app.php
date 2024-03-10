@@ -83,6 +83,14 @@ Router::addGroup('/app',function (){
         Router::get('/game', 'App\Controller\App\NoticeController@game');
     });
 
+    //长视频
+    Router::addGroup('/video',function (){
+        Router::get('/list', 'App\Controller\App\VideoController@list');
+        Router::get('/info', 'App\Controller\App\VideoController@info');
+        Router::post('/praise', 'App\Controller\App\VideoController@praise');
+        Router::post('/favor', 'App\Controller\App\VideoController@favor');
+    });
+
 
 //    Router::addGroup('',function (){
 //        Router::addGroup('/user',function () {
