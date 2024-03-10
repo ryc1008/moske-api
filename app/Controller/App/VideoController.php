@@ -37,6 +37,7 @@ class VideoController extends CommonController
             $params['type_id'] = [10040, 10041];
             $params['status'] = [Video::STATUS_1, Video::STATUS_2];
         }
+        $lists = [];
         $types = [];
         if(is_numeric($data['gid'])){
             $types = Type::where('parent_id', $data['gid'])
@@ -45,7 +46,7 @@ class VideoController extends CommonController
                 ->get(['id', 'title', 'name', 'icon']);
         }
 
-        return $this->returnJson(0, ['types' => $types], $params);
+        return $this->returnJson(0, ['types' => $types, 'lists' => $lists], $params);
 //        else{
 //            $params['status'] = [Playlet::STATUS_2];
 //        }
