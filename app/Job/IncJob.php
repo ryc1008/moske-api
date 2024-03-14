@@ -9,6 +9,7 @@ use App\Model\Photo;
 use App\Model\Playlet;
 use App\Model\Story;
 use App\Model\User;
+use App\Model\Video;
 use App\Until\RegionSearcher;
 use Carbon\Carbon;
 use Hyperf\AsyncQueue\Job;
@@ -50,6 +51,9 @@ class IncJob extends Job
                     break;
                 case 'live':
                     Live::where('id', $data['id'])->increment('show');
+                    break;
+                case 'video':
+                    Video::where('id', $data['id'])->increment('show');
                     break;
             }
         }else{

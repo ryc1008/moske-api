@@ -108,6 +108,7 @@ class CommonController extends BaseController
             'lady' => 3, //楼凤
             'story' => 4, //短篇小说
             'photo' => 5, //套图
+            'video' => 6, //视频
         ];
         return $model[$str];
     }

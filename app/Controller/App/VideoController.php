@@ -86,6 +86,33 @@ class VideoController extends CommonController
 
     }
 
+    public function info(RequestInterface $request){
+        $id = (int)$request->query('id', 0);
+        if(!$id){
+            return $this->returnJson(1, null, '参数错误');
+        }
+        $fields = ['*'];
+        $info = Video::where('status','<>', Video::STATUS_3)->find($id, $fields);
+        if(!$info){
+            return $this->returnJson(1, null, '数据不存在');
+        }
+        $user = $this->user();
+        $model = $this->model($this->m);
+        //会员才能看
+        $user['is_buy'] = 0;
+        if($user['vip_id'] > 1){
+            $user['is_buy'] = 1;
+        }
+        //是否收藏
+        $favor = $this->isFavor($user['id'], $info['id'], $model);
+        $user['is_favor'] = $favor ? 1 : 0;
+        $info['user'] = $user;
+        //增加浏览量
+        QueueService::push(new IncJob(['id' => $info['id'], 'model' => $this->m]));
+        return $this->returnJson(0, $info, $id);
+
+    }
+
 
 
     public function praise(RequestInterface $request)
