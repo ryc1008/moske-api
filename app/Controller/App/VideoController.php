@@ -45,7 +45,10 @@ class VideoController extends CommonController
 //            }
             $lists = [];
             foreach ($types as $item){
-                $lists[$item['id']] = Video::where('status', Video::STATUS_2)->where('group_id', $item['id'])->take(5)->get();
+                $lists[$item['id']] = Video::where('status', Video::STATUS_2)
+                    ->where('group_id', $item['id'])
+                    ->take(5)
+                    ->get();
             }
             return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
 
@@ -53,29 +56,33 @@ class VideoController extends CommonController
 
         }
         if($gid == 'topic'){
-            $gid = 10042;
-        }
-
-
-        if($gid == 10001){
-
-        }else{
-            $types = Type::where('parent_id', $gid)
+            $types = Type::where('parent_id', 10042)
                 ->where('status', Type::STATUS_1)
                 ->orderBy('sort')
                 ->get(['id', 'title', 'name', 'icon']);
-            $ids = [];
-            foreach ($types as $type){
-                $ids[] = $type['id'];
+            $lists = [];
+            foreach ($types as $item){
+                $lists[$item['id']] = Video::where('status', Video::STATUS_2)
+                    ->where('topic_id', $item['id'])
+                    ->take(5)
+                    ->get();
             }
-            $_lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
-                ->where('r.status', Video::STATUS_2)
-                ->where('r.number', '<=', 5)
-                ->get();
-//            foreach ($_lists as $item){
-//                $lists[$item['group_id']][] = $item;
-//            }
+            return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
         }
+
+        $types = Type::where('parent_id', $gid)
+            ->where('status', Type::STATUS_1)
+            ->orderBy('sort')
+            ->get(['id', 'title', 'name', 'icon']);
+        $lists = [];
+        foreach ($types as $item){
+            $lists[$item['id']] = Video::where('status', Video::STATUS_2)
+                ->where('type_id', $item['id'])
+                ->take(5)
+                ->get();
+        }
+        return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
+
 
     }
 
