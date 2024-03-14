@@ -85,6 +85,7 @@ Router::addGroup('/app',function (){
 
     //长视频
     Router::addGroup('/video',function (){
+        Router::get('/main', 'App\Controller\App\VideoController@main');
         Router::get('/list', 'App\Controller\App\VideoController@list');
         Router::get('/info', 'App\Controller\App\VideoController@info');
         Router::post('/praise', 'App\Controller\App\VideoController@praise');

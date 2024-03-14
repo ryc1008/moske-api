@@ -24,69 +24,39 @@ class VideoController extends CommonController
 
     protected $m = 'video';
 
-    public function list(RequestInterface $request)
+    public function main(RequestInterface $request)
     {
         $data = $request->all();
         $params['page'] = $data['page'] ?? 1;
-        $params['gid'] = $data['gid'] ?? 0;
-        if($data['gid'] == 'good'){
-            $params['type_id'] = [10040, 10041];
-            $params['status'] = [Video::STATUS_1, Video::STATUS_2];
+        $gid = $data['gid'] ?? 0;
+        if($gid == 'good'){
+            $gid = 10001;
         }
-        if($data['gid'] == 'topic'){
-            $params['type_id'] = [10040, 10041];
-            $params['status'] = [Video::STATUS_1, Video::STATUS_2];
+        if($gid == 'topic'){
+            $gid = 10042;
         }
-        $lists = [];
-        $types = [];
-        if(is_numeric($data['gid'])){
-            $types = Type::where('parent_id', $data['gid'])
+
+
+        if($gid == 'good'){
+            $lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
+                ->where('r.status', Video::STATUS_2)
+                ->where('r.number', '<=', 5)
+                ->get();
+        }else{
+            $types = Type::where('parent_id', $gid)
                 ->where('status', Type::STATUS_1)
                 ->orderBy('sort')
                 ->get(['id', 'title', 'name', 'icon']);
-        }
-
-        return $this->returnJson(0, ['types' => $types, 'lists' => $lists], $params);
-//        else{
-//            $params['status'] = [Playlet::STATUS_2];
-//        }
-        $fields = ['id', 'title', 'thumb', 'target', 'type_id', 'time', 'tag', 'money', 'show', 'hits', 'favor'];
-        $list = Playlet::app($params, $fields, 5);
-
-        //必须是VIP，免费才能看
-        $user = $this->user();
-        $model = $this->model($this->m);
-        foreach ($list->items() as &$item){
-            $user['is_buy'] = 0;//不是会员,不管免不免费，都是未购买
-            if($user['vip_id'] > 1){
-                $user['is_buy'] = 1;//是会员, 免费设置成已购买
+            $ids = [];
+            foreach ($types as $type){
+                $ids[] = $type['id'];
             }
-            //不管是不是会员，购买了的肯定都能看（这里不建议把需要花钱的改成免费的，可能造成别人不是VIP了，之前花了钱不能再继续看了）
-            if($item['money'] > 0){
-                //需要钻石的必须是购买才能看
-                $buy = $this->isBuy($user['id'], $item['id'], $model);
-                if(!$buy){
-                    $user['is_buy'] = 0;
-                }
-            }
-
-            //是否收藏
-            $favor = $this->isFavor($user['id'], $item['id'], $model);
-            $user['is_favor'] = $favor ? 1 : 0;
-            //是否点赞
-            $praise = $this->isPraise($user['id'], $item['id'], $model);
-            $user['is_praise'] = $praise ? 1 : 0;
-            //是否关注人物（类目）
-            $follow = $this->isFollow($user['id'], $item['type_id'], $model);
-            $user['is_follow'] = $follow ? 1 : 0;
-            $item['user'] = $user;
-            $item['guid'] = uuid();
-            $item['state'] = 'pause';
-            $item['playing'] = false;
-            //这个写到进程中去吧，太慢了: 更新自身show值
-            QueueService::push(new IncJob(['id' => $item['id'], 'model' => $this->m]));
+            $lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
+                ->where('r.status', Video::STATUS_2)
+                ->where('r.number', '<=', 5)
+                ->get();
         }
-        return $this->returnJson(0, $list);
+        return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
     }
 
 

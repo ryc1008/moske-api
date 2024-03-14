@@ -27,7 +27,7 @@ class TypeController extends BaseController
     {
         try {
             $params = ['id' => 10000];
-            $lists = Type::list($params,['id', 'title', 'icon', 'parent_id', 'sort', 'status']);
+            $lists = Type::list($params,['id', 'title', 'icon', 'parent_id', 'sort', 'status', 'name']);
             state_to_text($lists, [
                 'status' => Type::STATUS_TEXT,
             ]);
