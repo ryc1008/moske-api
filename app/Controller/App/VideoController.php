@@ -30,18 +30,35 @@ class VideoController extends CommonController
         $params['page'] = $data['page'] ?? 1;
         $gid = $data['gid'] ?? 0;
         if($gid == 'good'){
-            $gid = 10001;
+            $types = Type::where('parent_id', 10001)
+                ->where('status', Type::STATUS_1)
+                ->orderBy('sort')
+                ->get(['id', 'title', 'name', 'icon']);
+            //ORDER BY RAND()
+//            $_lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ) AS number FROM `videos` ) AS r'))
+//                ->where('r.status', Video::STATUS_2)
+//                ->where('r.number', '<', 6)
+//                ->get();
+
+//            foreach ($_lists as $item){
+//                $lists[$item->group_id][] = $item;
+//            }
+            $lists = [];
+            foreach ($types as $item){
+                $lists[$item['id']] = Video::where('status', Video::STATUS_2)->where('group_id', $item['id'])->take(5)->get();
+            }
+            return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
+
+
+
         }
         if($gid == 'topic'){
             $gid = 10042;
         }
 
 
-        if($gid == 'good'){
-            $lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
-                ->where('r.status', Video::STATUS_2)
-                ->where('r.number', '<=', 5)
-                ->get();
+        if($gid == 10001){
+
         }else{
             $types = Type::where('parent_id', $gid)
                 ->where('status', Type::STATUS_1)
@@ -51,12 +68,15 @@ class VideoController extends CommonController
             foreach ($types as $type){
                 $ids[] = $type['id'];
             }
-            $lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
+            $_lists = Db::table(Db::raw('(SELECT *, ROW_NUMBER() OVER ( PARTITION BY `group_id` ORDER BY RAND()) AS number FROM `videos` ) AS r'))
                 ->where('r.status', Video::STATUS_2)
                 ->where('r.number', '<=', 5)
                 ->get();
+//            foreach ($_lists as $item){
+//                $lists[$item['group_id']][] = $item;
+//            }
         }
-        return $this->returnJson(0, ['types' => $types, 'lists' => $lists]);
+
     }
 
 
